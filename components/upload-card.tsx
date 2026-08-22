@@ -1,138 +1,154 @@
 "use client";
 
-import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useCallback, useRef, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
-import { Check, Spinner, Upload } from "./icons";
+import { Check, Info, Spinner, Upload } from "./icons";
 import { Button } from "./ui";
 
-/**
- * The three pipeline steps map 1:1 to the three API routes in the plan:
- * /parse, /extract, /analyze. The client drives them in sequence and polls
- * status — which is why the UI can show real progress without a job queue.
- */
-const PIPELINE = [
-  { key: "parse", label: "Splitting into clauses", detail: "pdfjs → clause splitter → embeddings" },
-  { key: "extract", label: "Extracting deal terms", detail: "8 fields, each with a clause citation" },
-  { key: "analyze", label: "Checking your playbook", detail: "7 rules → risk flags" },
-] as const;
+const MAX_BYTES = 25 * 1024 * 1024;
 
-type Phase = "idle" | "running" | "done";
+type Phase = "idle" | "uploading" | "done" | "error";
 
 export function UploadCard() {
+  const router = useRouter();
   const [dragging, setDragging] = useState(false);
   const [phase, setPhase] = useState<Phase>("idle");
-  const [step, setStep] = useState(0);
   const [filename, setFilename] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
-
-  useEffect(() => {
-    const t = timers.current;
-    return () => t.forEach(clearTimeout);
-  }, []);
-
-  const start = useCallback((name: string) => {
-    setFilename(name);
-    setPhase("running");
-    setStep(0);
-    // Placeholder timings. Replaced by real fetch() calls to the pipeline routes.
-    timers.current.push(setTimeout(() => setStep(1), 1400));
-    timers.current.push(setTimeout(() => setStep(2), 3000));
-    timers.current.push(
-      setTimeout(() => {
-        setStep(3);
-        setPhase("done");
-      }, 4600),
-    );
-  }, []);
-
-  const onFiles = (files: FileList | null) => {
-    const file = files?.[0];
-    if (!file) return;
-    start(file.name);
-  };
 
   const reset = () => {
-    timers.current.forEach(clearTimeout);
-    timers.current = [];
     setPhase("idle");
-    setStep(0);
     setFilename(null);
+    setMessage(null);
     if (inputRef.current) inputRef.current.value = "";
   };
 
-  if (phase !== "idle") {
+  const upload = useCallback(
+    async (file: File) => {
+      setFilename(file.name);
+      setMessage(null);
+
+      if (file.type !== "application/pdf") {
+        setPhase("error");
+        setMessage("That isn't a PDF. ClauseLens only reads PDF contracts.");
+        return;
+      }
+      if (file.size > MAX_BYTES) {
+        setPhase("error");
+        setMessage("That file is over 25 MB. Try a smaller contract.");
+        return;
+      }
+
+      setPhase("uploading");
+      const supabase = createClient();
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) {
+        setPhase("error");
+        setMessage("Your session expired. Sign in again.");
+        return;
+      }
+
+      // The first path segment is the owner — the storage policies in the
+      // migration compare it against auth.uid(), so a user can only ever
+      // write into their own folder.
+      const id = crypto.randomUUID();
+      const storagePath = `${user.id}/${id}.pdf`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("contracts")
+        .upload(storagePath, file, { contentType: "application/pdf" });
+
+      if (uploadError) {
+        setPhase("error");
+        setMessage(uploadError.message);
+        return;
+      }
+
+      const { error: insertError } = await supabase.from("contracts").insert({
+        id,
+        user_id: user.id,
+        filename: file.name,
+        storage_path: storagePath,
+        status: "uploaded",
+      });
+
+      if (insertError) {
+        // Do not leave an orphaned file behind if the row failed to write.
+        await supabase.storage.from("contracts").remove([storagePath]);
+        setPhase("error");
+        setMessage(insertError.message);
+        return;
+      }
+
+      setPhase("done");
+      router.refresh();
+    },
+    [router],
+  );
+
+  const onFiles = (files: FileList | null) => {
+    const file = files?.[0];
+    if (file) void upload(file);
+  };
+
+  if (phase === "uploading" || phase === "done" || phase === "error") {
     return (
       <div className="rounded-3xl border border-line bg-white p-7 shadow-soft">
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
             <p className="eyebrow mb-2">
-              {phase === "done" ? "Review ready" : "Processing"}
+              {phase === "uploading"
+                ? "Uploading"
+                : phase === "done"
+                  ? "Uploaded"
+                  : "Didn't work"}
             </p>
-            <p className="truncate font-display text-lg text-cocoa-900">{filename}</p>
+            <p className="truncate font-display text-lg text-cocoa-900">
+              {filename}
+            </p>
           </div>
-          <button
-            onClick={reset}
-            className="shrink-0 rounded-full px-3 py-1.5 text-[13px] text-muted transition-colors hover:bg-cocoa-50 hover:text-cocoa-700"
-          >
-            {phase === "done" ? "Upload another" : "Cancel"}
-          </button>
+          {phase !== "uploading" ? (
+            <button
+              onClick={reset}
+              className="shrink-0 rounded-full px-3 py-1.5 text-[13px] text-muted transition-colors hover:bg-cocoa-50 hover:text-cocoa-700"
+            >
+              {phase === "done" ? "Upload another" : "Try again"}
+            </button>
+          ) : null}
         </div>
 
-        <ol className="mt-7 space-y-1">
-          {PIPELINE.map((s, i) => {
-            const state = i < step ? "done" : i === step ? "active" : "todo";
-            return (
-              <li
-                key={s.key}
-                className={cn(
-                  "flex items-start gap-3.5 rounded-2xl px-3 py-3 transition-colors duration-300",
-                  state === "active" && "bg-cocoa-50/70",
-                )}
-              >
-                <span
-                  className={cn(
-                    "mt-0.5 grid size-6 shrink-0 place-items-center rounded-full border transition-colors duration-300",
-                    state === "done" && "border-sage-200 bg-sage-50 text-sage-700",
-                    state === "active" && "border-cocoa-200 bg-white text-cocoa-600",
-                    state === "todo" && "border-line bg-white text-line-strong",
-                  )}
-                >
-                  {state === "done" ? (
-                    <Check width={13} height={13} />
-                  ) : state === "active" ? (
-                    <Spinner width={13} height={13} className="animate-spin" />
-                  ) : (
-                    <span className="size-1.5 rounded-full bg-current" />
-                  )}
-                </span>
-                <span className="min-w-0">
-                  <span
-                    className={cn(
-                      "block text-sm transition-colors duration-300",
-                      state === "todo" ? "text-muted" : "font-medium text-cocoa-800",
-                    )}
-                  >
-                    {s.label}
-                  </span>
-                  <span className="mt-0.5 block font-mono text-[11px] text-muted/80">
-                    {s.detail}
-                  </span>
-                </span>
-              </li>
-            );
-          })}
-        </ol>
-
-        {phase === "done" ? (
-          <Link
-            href="/contracts/msa-brightharbor"
-            className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-cocoa-700 px-5 py-3 text-sm font-medium text-white shadow-soft transition-all hover:bg-cocoa-800 hover:shadow-lift"
+        <div className="mt-6 flex items-start gap-3.5">
+          <span
+            className={cn(
+              "mt-0.5 grid size-7 shrink-0 place-items-center rounded-full border",
+              phase === "uploading" && "border-cocoa-200 bg-white text-cocoa-600",
+              phase === "done" && "border-sage-200 bg-sage-50 text-sage-700",
+              phase === "error" && "border-brick-200 bg-brick-50 text-brick-700",
+            )}
           >
-            Open the review
-          </Link>
-        ) : null}
+            {phase === "uploading" ? (
+              <Spinner width={14} height={14} className="animate-spin" />
+            ) : phase === "done" ? (
+              <Check width={14} height={14} />
+            ) : (
+              <Info width={14} height={14} />
+            )}
+          </span>
+
+          <p className="text-[13px] leading-relaxed text-muted">
+            {phase === "uploading"
+              ? "Sending the file to your private storage bucket…"
+              : phase === "done"
+                ? "Saved. It's in the list now, waiting to be read — the clause pipeline arrives in the next stage."
+                : message}
+          </p>
+        </div>
       </div>
     );
   }
@@ -159,7 +175,7 @@ export function UploadCard() {
       <div
         className={cn(
           "mx-auto grid size-14 place-items-center rounded-2xl transition-colors duration-300",
-          dragging ? "bg-white text-cocoa-600" : "bg-blush-50 text-cocoa-500",
+          dragging ? "bg-white text-cocoa-600" : "bg-blush-50 text-blush-500",
         )}
       >
         <Upload width={22} height={22} />
@@ -168,7 +184,7 @@ export function UploadCard() {
         Drop a contract here
       </p>
       <p className="mx-auto mt-2 max-w-xs text-[13px] leading-relaxed text-muted">
-        PDF with a text layer, up to about 50 pages. Scanned documents aren&apos;t
+        PDF with a text layer, up to 25 MB. Scanned documents aren&apos;t
         supported yet.
       </p>
       <input

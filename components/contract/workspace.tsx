@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import type { Contract } from "@/lib/types";
 import { riskFlags } from "@/lib/mock-data";
 import { StatusBadge } from "@/components/ui";
-import { ChevronRight } from "@/components/icons";
+import { ChevronRight, FileText } from "@/components/icons";
 import { ClausePanel } from "./clause-panel";
 import { DealTerms } from "./deal-terms";
 import { RiskReview } from "./risk-review";
@@ -14,7 +14,14 @@ import { AskPanel } from "./ask-panel";
 
 type Tab = "terms" | "risk" | "ask";
 
-export function ContractWorkspace({ contract }: { contract: Contract }) {
+export function ContractWorkspace({
+  contract,
+  analysed,
+}: {
+  contract: Contract;
+  /** False for a real upload that the pipeline has not read yet. */
+  analysed: boolean;
+}) {
   const [tab, setTab] = useState<Tab>("terms");
   const [selected, setSelected] = useState<string | null>(null);
   const [drawer, setDrawer] = useState(false);
@@ -62,7 +69,12 @@ export function ContractWorkspace({ contract }: { contract: Contract }) {
           </div>
 
           {/* Tabs */}
-          <div className="mt-7 flex gap-1 overflow-x-auto">
+          <div
+            className={cn(
+              "mt-7 flex gap-1 overflow-x-auto",
+              !analysed && "pointer-events-none opacity-35",
+            )}
+          >
             {tabs.map((t) => (
               <button
                 key={t.key}
@@ -92,8 +104,35 @@ export function ContractWorkspace({ contract }: { contract: Contract }) {
         </div>
       </div>
 
+      {/* ── Not read yet ───────────────────────────────────── */}
+      {!analysed ? (
+        <div className="mx-auto max-w-3xl px-6 py-16">
+          <div className="rounded-3xl border border-dashed border-line-strong bg-white/70 p-10 text-center">
+            <span className="mx-auto grid size-14 place-items-center rounded-2xl bg-blush-50 text-blush-500">
+              <FileText width={22} height={22} />
+            </span>
+            <h2 className="mt-5 font-display text-xl text-cocoa-900">
+              Uploaded, not yet read
+            </h2>
+            <p className="mx-auto mt-3 max-w-md text-[13.5px] leading-relaxed text-muted">
+              Your file is stored safely. The pipeline that splits it into
+              clauses, extracts the deal terms and checks your playbook is the
+              next thing being built — until then this contract has nothing to
+              show.
+            </p>
+            <Link
+              href="/contracts/msa-brightharbor"
+              className="mt-7 inline-flex items-center gap-2 rounded-full border border-line-strong bg-white px-5 py-2.5 text-sm text-cocoa-800 transition-all hover:border-cocoa-300 hover:bg-cocoa-50"
+            >
+              See the worked example instead
+              <ChevronRight width={15} height={15} />
+            </Link>
+          </div>
+        </div>
+      ) : null}
+
       {/* ── Body ───────────────────────────────────────────── */}
-      <div className="mx-auto max-w-6xl px-6 py-9">
+      <div className={cn("mx-auto max-w-6xl px-6 py-9", !analysed && "hidden")}>
         <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
           <div className="min-w-0">
             {tab === "terms" ? (

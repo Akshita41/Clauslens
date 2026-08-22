@@ -12,9 +12,18 @@ const nav = [
   { href: "/accuracy", label: "Accuracy", icon: Chart },
 ];
 
-export function AppShell({ children }: { children: React.ReactNode }) {
+export function AppShell({
+  children,
+  email,
+  name,
+}: {
+  children: React.ReactNode;
+  email: string;
+  name: string | null;
+}) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const display = name || email.split("@")[0] || "Account";
 
   return (
     <div className="flex min-h-dvh bg-shell">
@@ -62,22 +71,25 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
         <div className="border-t border-line p-3">
           <div className="flex items-center gap-3 rounded-xl px-3 py-2.5">
-            <span className="grid size-8 shrink-0 place-items-center rounded-full bg-blush-100 font-display text-[13px] text-cocoa-700">
-              A
+            <span className="grid size-8 shrink-0 place-items-center rounded-full bg-blush-100 font-display text-[13px] text-cocoa-700 uppercase">
+              {display.charAt(0)}
             </span>
             <div className="min-w-0 flex-1">
               <p className="truncate text-[13px] font-medium text-cocoa-800">
-                Demo account
+                {display}
               </p>
-              <p className="truncate text-[11px] text-muted">demo@clauselens.app</p>
+              <p className="truncate text-[11px] text-muted">{email}</p>
             </div>
-            <Link
-              href="/"
-              className="rounded-lg p-1.5 text-muted transition-colors hover:bg-cocoa-50 hover:text-cocoa-700"
-              aria-label="Sign out"
-            >
-              <LogOut width={16} height={16} />
-            </Link>
+            <form action="/auth/signout" method="post">
+              <button
+                type="submit"
+                className="rounded-lg p-1.5 text-muted transition-colors hover:bg-cocoa-50 hover:text-cocoa-700"
+                aria-label="Sign out"
+                title="Sign out"
+              >
+                <LogOut width={16} height={16} />
+              </button>
+            </form>
           </div>
         </div>
       </aside>
