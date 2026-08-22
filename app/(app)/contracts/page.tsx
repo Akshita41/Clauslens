@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/app-shell";
 import { UploadCard } from "@/components/upload-card";
 import { StatusBadge } from "@/components/ui";
 import { ChevronRight, FileText } from "@/components/icons";
+import { DeleteContractButton } from "@/components/contract/contract-actions";
 import { listContracts } from "@/lib/supabase/queries";
 import { contracts as demoContracts } from "@/lib/mock-data";
 import type { Contract } from "@/lib/types";
@@ -128,22 +129,28 @@ function ContractRow({
   contract: Contract;
   isExample?: boolean;
 }) {
-  const disabled = c.status === "failed";
+  const failed = c.status === "failed";
 
-  const body = (
+  return (
     <div
       className={cn(
-        "group flex items-center gap-4 rounded-2xl border bg-white p-4 shadow-soft transition-all duration-200",
+        "group relative flex items-center gap-4 rounded-2xl border bg-white p-4 shadow-soft transition-all duration-200",
         isExample ? "border-dashed border-line-strong" : "border-line",
-        !disabled && "hover:-translate-y-0.5 hover:shadow-lift",
-        disabled && "opacity-70",
+        "hover:-translate-y-0.5 hover:shadow-lift",
       )}
     >
-      <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-blush-50 text-cocoa-500">
+      {/* The whole card is the link; the delete control opts back in below. */}
+      <Link
+        href={`/contracts/${c.id}`}
+        className="absolute inset-0 z-0 rounded-2xl"
+        aria-label={`Open ${c.title}`}
+      />
+
+      <span className="relative z-10 grid size-11 shrink-0 place-items-center rounded-xl bg-blush-50 text-cocoa-500">
         <FileText width={19} height={19} />
       </span>
 
-      <div className="min-w-0 flex-1">
+      <div className="relative z-10 min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
           <p className="truncate font-display text-[17px] tracking-[-0.01em] text-cocoa-900">
             {c.title}
@@ -170,26 +177,30 @@ function ContractRow({
           {c.pageCount > 0 ? ` · ${c.pageCount} pages` : ""}
           {c.clauseCount > 0 ? ` · ${c.clauseCount} clauses` : ""}
         </p>
+        {failed && c.errorMessage ? (
+          <p className="mt-2 rounded-lg border border-brick-200 bg-brick-50 px-2.5 py-1.5 text-[11.5px] leading-relaxed text-brick-700">
+            {c.errorMessage}
+          </p>
+        ) : null}
       </div>
 
-      <div className="hidden shrink-0 text-right sm:block">
+      <div className="relative z-10 hidden shrink-0 text-right sm:block">
         <p className="text-[12px] text-muted">{formatRelative(c.createdAt)}</p>
       </div>
 
-      {disabled ? (
-        <span className="shrink-0 pr-1 text-[11px] text-brick-600">
-          No text layer
-        </span>
-      ) : (
-        <ChevronRight
-          width={18}
-          height={18}
-          className="shrink-0 text-line-strong transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-cocoa-400"
+      {!isExample ? (
+        <DeleteContractButton
+          contractId={c.id}
+          filename={c.filename}
+          className="relative z-10"
         />
-      )}
+      ) : null}
+
+      <ChevronRight
+        width={18}
+        height={18}
+        className="relative z-10 shrink-0 text-line-strong transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-cocoa-400"
+      />
     </div>
   );
-
-  if (disabled) return body;
-  return <Link href={`/contracts/${c.id}`}>{body}</Link>;
 }

@@ -254,19 +254,28 @@ export default function LandingPage() {
         <div className="mx-auto max-w-6xl px-6 py-24">
           <div className="grid items-center gap-14 lg:grid-cols-[1.15fr_1fr]">
             <div>
-              <p className="eyebrow mb-3">Measured, not claimed</p>
+              <p className="eyebrow mb-3">Checkable by design</p>
               <h2 className="max-w-md font-display text-[2.2rem] leading-[1.1] tracking-[-0.025em] text-cocoa-900">
-                The numbers are on the site, including the bad ones.
+                Built so you can check it, not just trust it.
               </h2>
 
               <dl className="mt-11 space-y-8">
                 {[
-                  { k: "89%", v: "field-level accuracy across 8 deal terms" },
-                  { k: "$0.04", v: "average API cost to review one contract" },
-                  { k: "7.4s", v: "average end-to-end extraction latency" },
+                  {
+                    k: "8",
+                    v: "deal terms per contract, every one naming the clause and page it came from",
+                  },
+                  {
+                    k: "0",
+                    v: "uncited answers reach you — a citation that doesn't resolve to a real clause is rejected, not shown",
+                  },
+                  {
+                    k: "1",
+                    v: "API call per contract, with the document cached and the exact cost printed after every run",
+                  },
                 ].map((stat) => (
                   <div key={stat.k} className="flex items-baseline gap-6">
-                    <dt className="w-[6.5rem] shrink-0 font-display text-[2.6rem] leading-none tracking-[-0.03em] text-blush-500">
+                    <dt className="w-[3.5rem] shrink-0 font-display text-[2.6rem] leading-none tracking-[-0.03em] text-blush-500">
                       {stat.k}
                     </dt>
                     <dd className="text-sm leading-relaxed text-muted">{stat.v}</dd>
@@ -275,15 +284,16 @@ export default function LandingPage() {
               </dl>
 
               <p className="mt-11 max-w-lg text-[13px] leading-relaxed text-muted">
-                Measured on a hand-labelled set of five contracts — small enough
-                that these numbers carry real error bars, and the{" "}
+                Accuracy figures go up once the golden set is labelled and the
+                evaluation has actually run — the{" "}
                 <Link
                   href="/accuracy"
                   className="text-blush-600 underline underline-offset-4"
                 >
                   accuracy page
                 </Link>{" "}
-                says so on the page itself.
+                is where they will live, and it will state the sample size next to
+                every number.
               </p>
             </div>
 

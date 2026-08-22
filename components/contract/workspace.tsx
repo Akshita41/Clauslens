@@ -6,9 +6,10 @@ import { cn } from "@/lib/utils";
 import type { Clause, Contract, Extraction } from "@/lib/types";
 import { riskFlags } from "@/lib/mock-data";
 import { StatusBadge } from "@/components/ui";
-import { ChevronRight, Lock } from "@/components/icons";
+import { ChevronRight, Lock, Scissors } from "@/components/icons";
 import { ClausePanel } from "./clause-panel";
 import { ClauseList } from "./clause-list";
+import { ReparseButton } from "./contract-actions";
 import { DealTerms } from "./deal-terms";
 import { RiskReview } from "./risk-review";
 import { AskPanel } from "./ask-panel";
@@ -137,13 +138,32 @@ export function ContractWorkspace({
       <div className="mx-auto max-w-6xl px-6 py-9">
         <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
           <div className="min-w-0">
-            {tab === "clauses" ? (
+            {tab === "clauses" && hasClauses ? (
               <ClauseList
                 clauses={clauses}
                 selectedClauseId={selected}
                 onSelect={select}
                 fallback={Boolean(contract.splitFallback)}
               />
+            ) : null}
+            {tab === "clauses" && !hasClauses ? (
+              <div className="rounded-3xl border border-dashed border-line-strong bg-white/70 p-10 text-center">
+                <span className="mx-auto grid size-14 place-items-center rounded-2xl bg-blush-50 text-blush-500">
+                  <Scissors width={22} height={22} />
+                </span>
+                <h2 className="mt-5 font-display text-xl text-cocoa-900">
+                  {contract.status === "failed"
+                    ? "This PDF could not be read"
+                    : "No clauses yet"}
+                </h2>
+                <p className="mx-auto mt-3 max-w-md text-[13.5px] leading-relaxed text-muted">
+                  {contract.errorMessage ??
+                    "The file is stored but has not been through the splitter."}
+                </p>
+                <div className="mt-7 flex justify-center">
+                  <ReparseButton contractId={contract.id} />
+                </div>
+              </div>
             ) : null}
             {tab === "terms" ? (
               <DealTerms

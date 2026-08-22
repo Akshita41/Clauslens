@@ -29,6 +29,21 @@ export default function AccuracyPage() {
       />
 
       <div className="mx-auto max-w-6xl space-y-8 px-6 py-10">
+        {/* ── Provenance ─────────────────────────────────── */}
+        <div className="flex gap-3.5 rounded-2xl border border-brick-200 bg-brick-50/70 px-5 py-4">
+          <Info width={18} height={18} className="mt-0.5 shrink-0 text-brick-600" />
+          <p className="text-[13px] leading-relaxed text-brick-700">
+            <span className="font-medium">
+              These are placeholder numbers, not measurements.
+            </span>{" "}
+            The evaluation runner and the labelled golden set are not built yet,
+            so nothing on this page has been produced by an actual run. It is
+            here to show the shape of the report. Every figure gets replaced the
+            first time <code className="font-mono">npm run eval</code> executes,
+            and this banner goes with them.
+          </p>
+        </div>
+
         {/* ── Run meta ───────────────────────────────────── */}
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px] text-muted">
           <span>

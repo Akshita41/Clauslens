@@ -27,6 +27,8 @@ export type Contract = {
   clauseCount: number;
   status: ContractStatus;
   createdAt: string;
+  /** Why parsing failed, shown instead of a bare Failed badge. */
+  errorMessage?: string | null;
   /** true when the clause splitter fell back to paragraph chunking */
   splitFallback?: boolean;
 };

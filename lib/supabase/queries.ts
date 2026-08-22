@@ -12,6 +12,7 @@ type ContractRow = {
   clause_count: number;
   status: Contract["status"];
   split_fallback: boolean;
+  error_message: string | null;
   created_at: string;
 };
 
@@ -27,6 +28,7 @@ function toContract(row: ContractRow): Contract {
     status: row.status,
     createdAt: row.created_at,
     splitFallback: row.split_fallback,
+    errorMessage: row.error_message,
   };
 }
 
@@ -35,7 +37,7 @@ export async function listContracts(): Promise<Contract[]> {
   const { data, error } = await supabase
     .from("contracts")
     .select(
-      "id, filename, title, counterparty, page_count, clause_count, status, split_fallback, created_at",
+      "id, filename, title, counterparty, page_count, clause_count, status, split_fallback, error_message, created_at",
     )
     .order("created_at", { ascending: false });
 
@@ -48,7 +50,7 @@ export async function getContract(id: string): Promise<Contract | null> {
   const { data, error } = await supabase
     .from("contracts")
     .select(
-      "id, filename, title, counterparty, page_count, clause_count, status, split_fallback, created_at",
+      "id, filename, title, counterparty, page_count, clause_count, status, split_fallback, error_message, created_at",
     )
     .eq("id", id)
     .maybeSingle();
