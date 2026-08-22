@@ -17,7 +17,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
 
   return (
     <div className="rounded-3xl border border-line bg-white p-8 shadow-lift">
-      <h1 className="font-display text-[1.75rem] leading-tight tracking-[-0.02em] text-plum-900">
+      <h1 className="font-display text-[1.75rem] leading-tight tracking-[-0.02em] text-cocoa-900">
         {isLogin ? "Welcome back" : "Create your workspace"}
       </h1>
       <p className="mt-2 text-[13.5px] leading-relaxed text-muted">
@@ -74,7 +74,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
 
       <Link
         href="/contracts"
-        className="mt-6 flex w-full items-center justify-center gap-2 rounded-full border border-line-strong bg-white px-5 py-3 text-sm text-plum-800 transition-all hover:border-plum-300 hover:bg-plum-50"
+        className="mt-6 flex w-full items-center justify-center gap-2 rounded-full border border-line-strong bg-white px-5 py-3 text-sm text-cocoa-800 transition-all hover:border-cocoa-300 hover:bg-cocoa-50"
       >
         Continue to the demo workspace
       </Link>
@@ -89,7 +89,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         {isLogin ? "No account yet? " : "Already have an account? "}
         <Link
           href={isLogin ? "/signup" : "/login"}
-          className="font-medium text-plum-700 underline underline-offset-4 hover:text-plum-900"
+          className="font-medium text-cocoa-700 underline underline-offset-4 hover:text-cocoa-900"
         >
           {isLogin ? "Create one" : "Sign in"}
         </Link>
@@ -104,12 +104,12 @@ function Field({
 }: React.ComponentProps<"input"> & { label: string }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-[12.5px] font-medium text-plum-700">
+      <span className="mb-1.5 block text-[12.5px] font-medium text-cocoa-700">
         {label}
       </span>
       <input
         {...props}
-        className="w-full rounded-2xl border border-line bg-cream/40 px-4 py-3 text-[14px] text-plum-900 transition-colors outline-none placeholder:text-muted/60 focus:border-plum-300 focus:bg-white"
+        className="w-full rounded-2xl border border-line bg-linen/40 px-4 py-3 text-[14px] text-cocoa-900 transition-colors outline-none placeholder:text-muted/60 focus:border-cocoa-300 focus:bg-white"
       />
     </label>
   );

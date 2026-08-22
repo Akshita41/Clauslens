@@ -123,7 +123,7 @@ export function AskPanel({
   return (
     <div className="flex min-h-[32rem] flex-col">
       <div className="mb-5">
-        <h2 className="font-display text-xl text-plum-900">Ask this contract</h2>
+        <h2 className="font-display text-xl text-cocoa-900">Ask this contract</h2>
         <p className="mt-1.5 max-w-lg text-[13px] leading-relaxed text-muted">
           Answers are written only from clauses retrieved out of this document. If
           nothing relevant is found, you get told so rather than given a guess.
@@ -134,10 +134,10 @@ export function AskPanel({
       <div className="flex-1 space-y-5">
         {messages.length === 0 && !thinking ? (
           <div className="rounded-3xl border border-dashed border-line-strong bg-white/60 p-8 text-center">
-            <span className="mx-auto grid size-12 place-items-center rounded-2xl bg-rose-50 text-plum-500">
+            <span className="mx-auto grid size-12 place-items-center rounded-2xl bg-blush-50 text-cocoa-500">
               <Sparkle width={20} height={20} />
             </span>
-            <p className="mt-4 font-display text-lg text-plum-900">
+            <p className="mt-4 font-display text-lg text-cocoa-900">
               What do you want to know?
             </p>
             <p className="mx-auto mt-2 max-w-sm text-[13px] leading-relaxed text-muted">
@@ -149,7 +149,7 @@ export function AskPanel({
                 <button
                   key={q}
                   onClick={() => ask(q)}
-                  className="rounded-full border border-line bg-white px-3.5 py-2 text-[12.5px] text-plum-700 transition-all hover:-translate-y-px hover:border-plum-200 hover:bg-plum-50 hover:shadow-soft"
+                  className="rounded-full border border-line bg-white px-3.5 py-2 text-[12.5px] text-cocoa-700 transition-all hover:-translate-y-px hover:border-cocoa-200 hover:bg-cocoa-50 hover:shadow-soft"
                 >
                   {q}
                 </button>
@@ -161,7 +161,7 @@ export function AskPanel({
         {messages.map((m) =>
           m.role === "user" ? (
             <div key={m.id} className="flex justify-end">
-              <p className="max-w-[85%] rounded-3xl rounded-br-lg bg-plum-700 px-4.5 py-3 text-[14px] leading-relaxed text-white shadow-soft">
+              <p className="max-w-[85%] rounded-3xl rounded-br-lg bg-cocoa-700 px-4.5 py-3 text-[14px] leading-relaxed text-white shadow-soft">
                 {m.content}
               </p>
             </div>
@@ -170,13 +170,13 @@ export function AskPanel({
               <div
                 className={cn(
                   "rounded-3xl rounded-bl-lg border bg-white p-5 shadow-soft",
-                  m.notFound ? "border-amber-soft-200" : "border-line",
+                  m.notFound ? "border-ochre-200" : "border-line",
                 )}
               >
                 <p
                   className={cn(
                     "text-[14.5px] leading-relaxed",
-                    m.notFound ? "text-amber-soft-700 italic" : "text-plum-900",
+                    m.notFound ? "text-ochre-700 italic" : "text-cocoa-900",
                   )}
                 >
                   {m.content}
@@ -192,14 +192,14 @@ export function AskPanel({
 
                 {m.citations?.length ? (
                   <div className="mt-4 flex flex-wrap items-center gap-2">
-                    <span className="text-[11px] font-medium tracking-[0.08em] text-plum-400 uppercase">
+                    <span className="text-[11px] font-medium tracking-[0.08em] text-cocoa-400 uppercase">
                       Sources
                     </span>
                     {m.citations.map((c) => (
                       <button
                         key={c.clauseId}
                         onClick={() => onSelect(c.clauseId)}
-                        className="inline-flex items-center gap-1.5 rounded-full border border-line bg-cream/70 px-2.5 py-1 font-mono text-[11px] text-plum-600 transition-all hover:-translate-y-px hover:border-plum-200 hover:bg-plum-50"
+                        className="inline-flex items-center gap-1.5 rounded-full border border-line bg-linen/70 px-2.5 py-1 font-mono text-[11px] text-cocoa-600 transition-all hover:-translate-y-px hover:border-cocoa-200 hover:bg-cocoa-50"
                       >
                         §{c.clauseNo} · {c.heading} · p.{c.page}
                       </button>
@@ -209,7 +209,7 @@ export function AskPanel({
 
                 {m.retrieved?.length ? (
                   <details className="group mt-4 border-t border-line pt-3">
-                    <summary className="flex cursor-pointer list-none items-center gap-2 text-[12px] text-muted transition-colors hover:text-plum-700">
+                    <summary className="flex cursor-pointer list-none items-center gap-2 text-[12px] text-muted transition-colors hover:text-cocoa-700">
                       <Layers width={14} height={14} />
                       {m.retrieved.length} clauses retrieved
                       <span className="ml-auto font-mono text-[11px] text-muted/70">
@@ -227,7 +227,7 @@ export function AskPanel({
                           </span>
                           <button
                             onClick={() => onSelect(r.clauseId)}
-                            className="min-w-0 flex-1 truncate text-left text-plum-700 hover:underline"
+                            className="min-w-0 flex-1 truncate text-left text-cocoa-700 hover:underline"
                           >
                             {r.heading}
                           </button>
@@ -246,7 +246,7 @@ export function AskPanel({
 
         {thinking ? (
           <div className="flex items-center gap-2.5 rounded-3xl rounded-bl-lg border border-line bg-white px-5 py-4 text-[13px] text-muted shadow-soft">
-            <Search width={15} height={15} className="animate-pulse text-plum-400" />
+            <Search width={15} height={15} className="animate-pulse text-cocoa-400" />
             Searching {clauses.length} clauses…
           </div>
         ) : null}
@@ -260,19 +260,19 @@ export function AskPanel({
           e.preventDefault();
           ask(input);
         }}
-        className="sticky bottom-0 mt-6 flex items-center gap-2 rounded-full border border-line bg-white p-1.5 shadow-soft focus-within:border-plum-300"
+        className="sticky bottom-0 mt-6 flex items-center gap-2 rounded-full border border-line bg-white p-1.5 shadow-soft focus-within:border-cocoa-300"
       >
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask about termination, liability, IP…"
-          className="min-w-0 flex-1 bg-transparent px-4 py-2 text-[14px] text-plum-900 outline-none placeholder:text-muted/70"
+          className="min-w-0 flex-1 bg-transparent px-4 py-2 text-[14px] text-cocoa-900 outline-none placeholder:text-muted/70"
         />
         <button
           type="submit"
           disabled={!input.trim() || thinking}
           aria-label="Send question"
-          className="grid size-10 shrink-0 place-items-center rounded-full bg-plum-700 text-white transition-all hover:bg-plum-800 disabled:opacity-40"
+          className="grid size-10 shrink-0 place-items-center rounded-full bg-cocoa-700 text-white transition-all hover:bg-cocoa-800 disabled:opacity-40"
         >
           <Send width={17} height={17} />
         </button>

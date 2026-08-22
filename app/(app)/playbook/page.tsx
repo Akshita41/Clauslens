@@ -24,10 +24,10 @@ export default function PlaybookPage() {
             >
               <div className="rounded-3xl border border-line bg-white p-6 shadow-soft transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lift">
                 <div className="flex flex-wrap items-center gap-3">
-                  <span className="rounded-lg bg-plum-50 px-2 py-1 font-mono text-[11px] text-plum-600">
+                  <span className="rounded-lg bg-cocoa-50 px-2 py-1 font-mono text-[11px] text-cocoa-600">
                     {r.id}
                   </span>
-                  <h2 className="font-display text-lg tracking-[-0.01em] text-plum-900">
+                  <h2 className="font-display text-lg tracking-[-0.01em] text-cocoa-900">
                     {r.title}
                   </h2>
                   <SeverityBadge severity={r.severityIfViolated} className="ml-auto" />
@@ -40,12 +40,12 @@ export default function PlaybookPage() {
           ))}
         </ul>
 
-        <div className="mt-8 rounded-2xl border border-line bg-cream/60 p-6">
+        <div className="mt-8 rounded-2xl border border-line bg-linen/60 p-6">
           <p className="eyebrow mb-3">Why this is a file, not a settings screen</p>
           <p className="text-[13px] leading-relaxed text-muted">
             Seven rules did not justify a full create/edit/delete interface, a
             database table and the permissions that come with them. They live in{" "}
-            <code className="rounded bg-white px-1.5 py-0.5 font-mono text-[12px] text-plum-700">
+            <code className="rounded bg-white px-1.5 py-0.5 font-mono text-[12px] text-cocoa-700">
               lib/playbook.ts
             </code>{" "}
             and are read at analysis time. If a real user ever needed to edit them,

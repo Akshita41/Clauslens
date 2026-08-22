@@ -70,11 +70,11 @@ export function UploadCard() {
             <p className="eyebrow mb-2">
               {phase === "done" ? "Review ready" : "Processing"}
             </p>
-            <p className="truncate font-display text-lg text-plum-900">{filename}</p>
+            <p className="truncate font-display text-lg text-cocoa-900">{filename}</p>
           </div>
           <button
             onClick={reset}
-            className="shrink-0 rounded-full px-3 py-1.5 text-[13px] text-muted transition-colors hover:bg-plum-50 hover:text-plum-700"
+            className="shrink-0 rounded-full px-3 py-1.5 text-[13px] text-muted transition-colors hover:bg-cocoa-50 hover:text-cocoa-700"
           >
             {phase === "done" ? "Upload another" : "Cancel"}
           </button>
@@ -88,14 +88,14 @@ export function UploadCard() {
                 key={s.key}
                 className={cn(
                   "flex items-start gap-3.5 rounded-2xl px-3 py-3 transition-colors duration-300",
-                  state === "active" && "bg-plum-50/70",
+                  state === "active" && "bg-cocoa-50/70",
                 )}
               >
                 <span
                   className={cn(
                     "mt-0.5 grid size-6 shrink-0 place-items-center rounded-full border transition-colors duration-300",
                     state === "done" && "border-sage-200 bg-sage-50 text-sage-700",
-                    state === "active" && "border-plum-200 bg-white text-plum-600",
+                    state === "active" && "border-cocoa-200 bg-white text-cocoa-600",
                     state === "todo" && "border-line bg-white text-line-strong",
                   )}
                 >
@@ -111,7 +111,7 @@ export function UploadCard() {
                   <span
                     className={cn(
                       "block text-sm transition-colors duration-300",
-                      state === "todo" ? "text-muted" : "font-medium text-plum-800",
+                      state === "todo" ? "text-muted" : "font-medium text-cocoa-800",
                     )}
                   >
                     {s.label}
@@ -128,7 +128,7 @@ export function UploadCard() {
         {phase === "done" ? (
           <Link
             href="/contracts/msa-brightharbor"
-            className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-plum-700 px-5 py-3 text-sm font-medium text-white shadow-soft transition-all hover:bg-plum-800 hover:shadow-lift"
+            className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-cocoa-700 px-5 py-3 text-sm font-medium text-white shadow-soft transition-all hover:bg-cocoa-800 hover:shadow-lift"
           >
             Open the review
           </Link>
@@ -152,19 +152,19 @@ export function UploadCard() {
       className={cn(
         "rounded-3xl border-2 border-dashed p-9 text-center transition-all duration-300",
         dragging
-          ? "border-plum-300 bg-plum-50 shadow-lift"
-          : "border-line-strong bg-white/70 hover:border-plum-200 hover:bg-white",
+          ? "border-cocoa-300 bg-cocoa-50 shadow-lift"
+          : "border-line-strong bg-white/70 hover:border-cocoa-200 hover:bg-white",
       )}
     >
       <div
         className={cn(
           "mx-auto grid size-14 place-items-center rounded-2xl transition-colors duration-300",
-          dragging ? "bg-white text-plum-600" : "bg-rose-50 text-plum-500",
+          dragging ? "bg-white text-cocoa-600" : "bg-blush-50 text-cocoa-500",
         )}
       >
         <Upload width={22} height={22} />
       </div>
-      <p className="mt-5 font-display text-lg text-plum-900">
+      <p className="mt-5 font-display text-lg text-cocoa-900">
         Drop a contract here
       </p>
       <p className="mx-auto mt-2 max-w-xs text-[13px] leading-relaxed text-muted">

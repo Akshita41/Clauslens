@@ -17,7 +17,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="flex min-h-dvh bg-ivory">
+    <div className="flex min-h-dvh bg-shell">
       {/* ── Sidebar ───────────────────────────────────────── */}
       <aside
         className={cn(
@@ -27,7 +27,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       >
         <Link
           href="/"
-          className="flex items-center gap-2.5 px-6 py-6 text-plum-800"
+          className="flex items-center gap-2.5 px-6 py-6 text-cocoa-800"
           onClick={() => setOpen(false)}
         >
           <Logo width={26} height={26} />
@@ -49,8 +49,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 className={cn(
                   "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all duration-200",
                   active
-                    ? "bg-plum-50 font-medium text-plum-800"
-                    : "text-plum-600/80 hover:bg-plum-50/60 hover:text-plum-800",
+                    ? "bg-cocoa-50 font-medium text-cocoa-800"
+                    : "text-cocoa-600/80 hover:bg-cocoa-50/60 hover:text-cocoa-800",
                 )}
               >
                 <Icon width={18} height={18} className={active ? "" : "opacity-70"} />
@@ -62,18 +62,18 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
         <div className="border-t border-line p-3">
           <div className="flex items-center gap-3 rounded-xl px-3 py-2.5">
-            <span className="grid size-8 shrink-0 place-items-center rounded-full bg-rose-100 font-display text-[13px] text-plum-700">
+            <span className="grid size-8 shrink-0 place-items-center rounded-full bg-blush-100 font-display text-[13px] text-cocoa-700">
               A
             </span>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-[13px] font-medium text-plum-800">
+              <p className="truncate text-[13px] font-medium text-cocoa-800">
                 Demo account
               </p>
               <p className="truncate text-[11px] text-muted">demo@clauselens.app</p>
             </div>
             <Link
               href="/"
-              className="rounded-lg p-1.5 text-muted transition-colors hover:bg-plum-50 hover:text-plum-700"
+              className="rounded-lg p-1.5 text-muted transition-colors hover:bg-cocoa-50 hover:text-cocoa-700"
               aria-label="Sign out"
             >
               <LogOut width={16} height={16} />
@@ -84,7 +84,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
       {open ? (
         <button
-          className="fixed inset-0 z-30 bg-plum-900/20 backdrop-blur-[2px] lg:hidden"
+          className="fixed inset-0 z-30 bg-cocoa-900/20 backdrop-blur-[2px] lg:hidden"
           onClick={() => setOpen(false)}
           aria-label="Close menu"
         />
@@ -92,17 +92,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
       {/* ── Main ──────────────────────────────────────────── */}
       <div className="flex min-w-0 flex-1 flex-col lg:pl-[248px]">
-        <div className="sticky top-0 z-20 flex items-center gap-3 border-b border-line bg-ivory/85 px-5 py-3 backdrop-blur-md lg:hidden">
+        <div className="sticky top-0 z-20 flex items-center gap-3 border-b border-line bg-shell/85 px-5 py-3 backdrop-blur-md lg:hidden">
           <button
             onClick={() => setOpen(true)}
-            className="rounded-lg p-2 text-plum-700 transition-colors hover:bg-plum-50"
+            className="rounded-lg p-2 text-cocoa-700 transition-colors hover:bg-cocoa-50"
             aria-label="Open menu"
           >
             <svg width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round">
               <path d="M4 7h16M4 12h16M4 17h16" />
             </svg>
           </button>
-          <span className="font-display text-plum-800">ClauseLens</span>
+          <span className="font-display text-cocoa-800">ClauseLens</span>
         </div>
         <main className="min-w-0 flex-1">{children}</main>
       </div>
@@ -127,7 +127,7 @@ export function PageHeader({
       <div className="mx-auto flex max-w-6xl flex-col gap-5 px-6 py-9 sm:flex-row sm:items-end sm:justify-between">
         <div className="min-w-0">
           {eyebrow ? <p className="eyebrow mb-2.5">{eyebrow}</p> : null}
-          <h1 className="font-display text-[2rem] leading-tight tracking-[-0.02em] text-plum-900">
+          <h1 className="font-display text-[2rem] leading-tight tracking-[-0.02em] text-cocoa-900">
             {title}
           </h1>
           {description ? (

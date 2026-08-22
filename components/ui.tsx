@@ -14,11 +14,11 @@ const buttonBase =
 
 const buttonVariants: Record<ButtonVariant, string> = {
   primary:
-    "bg-plum-700 text-white shadow-soft hover:bg-plum-800 hover:shadow-lift active:translate-y-px",
+    "bg-cocoa-700 text-white shadow-soft hover:bg-cocoa-800 hover:shadow-lift active:translate-y-px",
   secondary:
-    "bg-white text-plum-800 border border-line-strong hover:border-plum-300 hover:bg-plum-50 active:translate-y-px",
-  ghost: "text-plum-700 hover:bg-plum-50",
-  danger: "bg-clay-600 text-white hover:bg-clay-700 active:translate-y-px",
+    "bg-white text-cocoa-800 border border-line-strong hover:border-cocoa-300 hover:bg-cocoa-50 active:translate-y-px",
+  ghost: "text-cocoa-700 hover:bg-cocoa-50",
+  danger: "bg-brick-600 text-white hover:bg-brick-700 active:translate-y-px",
 };
 
 const buttonSizes: Record<ButtonSize, string> = {
@@ -92,7 +92,7 @@ export function SectionHeading({
     <div className={cn("flex items-end justify-between gap-6", className)}>
       <div className="min-w-0">
         {eyebrow ? <p className="eyebrow mb-2.5">{eyebrow}</p> : null}
-        <h2 className="font-display text-[1.6rem] leading-tight tracking-[-0.015em] text-plum-900">
+        <h2 className="font-display text-[1.6rem] leading-tight tracking-[-0.015em] text-cocoa-900">
           {title}
         </h2>
         {description ? (
@@ -120,14 +120,14 @@ const severityStyles: Record<
   },
   CAUTION: {
     label: "Caution",
-    chip: "bg-amber-soft-50 text-amber-soft-700 border-amber-soft-200",
-    dot: "bg-amber-soft-600",
+    chip: "bg-ochre-50 text-ochre-700 border-ochre-200",
+    dot: "bg-ochre-600",
     icon: Info,
   },
   HIGH_RISK: {
     label: "High risk",
-    chip: "bg-clay-50 text-clay-700 border-clay-200",
-    dot: "bg-clay-600",
+    chip: "bg-brick-50 text-brick-700 border-brick-200",
+    dot: "bg-brick-600",
     icon: AlertTriangle,
   },
 };
@@ -167,9 +167,9 @@ const confidenceStyles: Record<Confidence, { label: string; className: string }>
   high: { label: "High confidence", className: "text-sage-700 bg-sage-50 border-sage-200" },
   medium: {
     label: "Needs a look",
-    className: "text-amber-soft-700 bg-amber-soft-50 border-amber-soft-200",
+    className: "text-ochre-700 bg-ochre-50 border-ochre-200",
   },
-  low: { label: "Low confidence", className: "text-clay-700 bg-clay-50 border-clay-200" },
+  low: { label: "Low confidence", className: "text-brick-700 bg-brick-50 border-brick-200" },
 };
 
 export function ConfidencePill({
@@ -201,24 +201,24 @@ const statusStyles: Record<
   ContractStatus,
   { label: string; className: string; busy?: boolean }
 > = {
-  uploaded: { label: "Queued", className: "bg-plum-50 text-plum-600 border-plum-200" },
+  uploaded: { label: "Queued", className: "bg-cocoa-50 text-cocoa-600 border-cocoa-200" },
   parsing: {
     label: "Reading clauses",
-    className: "bg-plum-50 text-plum-600 border-plum-200",
+    className: "bg-cocoa-50 text-cocoa-600 border-cocoa-200",
     busy: true,
   },
   extracting: {
     label: "Extracting terms",
-    className: "bg-plum-50 text-plum-600 border-plum-200",
+    className: "bg-cocoa-50 text-cocoa-600 border-cocoa-200",
     busy: true,
   },
   analyzing: {
     label: "Checking playbook",
-    className: "bg-plum-50 text-plum-600 border-plum-200",
+    className: "bg-cocoa-50 text-cocoa-600 border-cocoa-200",
     busy: true,
   },
   ready: { label: "Ready", className: "bg-sage-50 text-sage-700 border-sage-200" },
-  failed: { label: "Failed", className: "bg-clay-50 text-clay-700 border-clay-200" },
+  failed: { label: "Failed", className: "bg-brick-50 text-brick-700 border-brick-200" },
 };
 
 export function StatusBadge({
@@ -263,11 +263,11 @@ export function EmptyState({
   return (
     <div className="flex flex-col items-center justify-center px-6 py-16 text-center">
       {icon ? (
-        <div className="mb-5 grid size-14 place-items-center rounded-2xl border border-line bg-plum-50 text-plum-400">
+        <div className="mb-5 grid size-14 place-items-center rounded-2xl border border-line bg-cocoa-50 text-cocoa-400">
           {icon}
         </div>
       ) : null}
-      <p className="font-display text-lg text-plum-900">{title}</p>
+      <p className="font-display text-lg text-cocoa-900">{title}</p>
       {description ? (
         <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted">{description}</p>
       ) : null}
@@ -284,8 +284,8 @@ export function Divider({ className }: { className?: string }) {
 
 export function MockNotice({ children }: { children: ReactNode }) {
   return (
-    <p className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-line-strong bg-cream px-2.5 py-1 text-[11px] text-muted">
-      <span className="size-1.5 rounded-full bg-rose-300" />
+    <p className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-line-strong bg-linen px-2.5 py-1 text-[11px] text-muted">
+      <span className="size-1.5 rounded-full bg-blush-300" />
       {children}
     </p>
   );

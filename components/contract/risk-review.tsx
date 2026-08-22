@@ -45,8 +45,8 @@ export function RiskReview({
       <div className="mb-6 grid gap-3 sm:grid-cols-3">
         {(
           [
-            ["HIGH_RISK", "High risk", "border-clay-200 bg-clay-50 text-clay-700"],
-            ["CAUTION", "Caution", "border-amber-soft-200 bg-amber-soft-50 text-amber-soft-700"],
+            ["HIGH_RISK", "High risk", "border-brick-200 bg-brick-50 text-brick-700"],
+            ["CAUTION", "Caution", "border-ochre-200 bg-ochre-50 text-ochre-700"],
             ["OK", "Matches playbook", "border-sage-200 bg-sage-50 text-sage-700"],
           ] as const
         ).map(([key, label, style]) => (
@@ -59,7 +59,7 @@ export function RiskReview({
 
       <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="font-display text-xl text-plum-900">Playbook review</h2>
+          <h2 className="font-display text-xl text-cocoa-900">Playbook review</h2>
           <p className="mt-1.5 text-[13px] leading-relaxed text-muted">
             Each clause checked against your standard positions. Accept a flag to
             keep it, reject it if the model got it wrong.
@@ -86,14 +86,14 @@ export function RiskReview({
               <div
                 className={cn(
                   "rounded-3xl border bg-white p-5 shadow-soft transition-all duration-200",
-                  active ? "border-plum-300 ring-1 ring-plum-200" : "border-line",
+                  active ? "border-cocoa-300 ring-1 ring-cocoa-200" : "border-line",
                   verdict === "rejected" && "opacity-55",
                 )}
               >
                 <div className="flex flex-wrap items-center gap-2.5">
                   <SeverityBadge severity={f.severity} />
                   <span className="font-mono text-[11px] text-muted">{f.ruleId}</span>
-                  <span className="text-[13px] font-medium text-plum-800">
+                  <span className="text-[13px] font-medium text-cocoa-800">
                     {f.ruleTitle}
                   </span>
                   {f.confidence !== "high" ? (
@@ -101,12 +101,12 @@ export function RiskReview({
                   ) : null}
                 </div>
 
-                <p className="mt-3.5 text-[14px] leading-relaxed text-plum-800">
+                <p className="mt-3.5 text-[14px] leading-relaxed text-cocoa-800">
                   {f.reason}
                 </p>
 
-                <div className="mt-4 rounded-2xl border border-line bg-cream/50 px-4 py-3">
-                  <p className="text-[11px] font-medium tracking-[0.08em] text-plum-400 uppercase">
+                <div className="mt-4 rounded-2xl border border-line bg-linen/50 px-4 py-3">
+                  <p className="text-[11px] font-medium tracking-[0.08em] text-cocoa-400 uppercase">
                     Your standard position
                   </p>
                   <p className="mt-1.5 text-[13px] leading-relaxed text-muted">
@@ -120,8 +120,8 @@ export function RiskReview({
                     className={cn(
                       "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 font-mono text-[11.5px] transition-colors",
                       active
-                        ? "border-plum-700 bg-plum-700 text-white"
-                        : "border-line bg-white text-plum-600 hover:border-plum-200 hover:bg-plum-50",
+                        ? "border-cocoa-700 bg-cocoa-700 text-white"
+                        : "border-line bg-white text-cocoa-600 hover:border-cocoa-200 hover:bg-cocoa-50",
                     )}
                   >
                     <Quote width={13} height={13} />
@@ -188,9 +188,9 @@ function VerdictButton({
       className={cn(
         "grid size-9 place-items-center rounded-full border transition-all duration-200 active:translate-y-px",
         active && tone === "accept" && "border-sage-600 bg-sage-600 text-white",
-        active && tone === "reject" && "border-clay-600 bg-clay-600 text-white",
+        active && tone === "reject" && "border-brick-600 bg-brick-600 text-white",
         !active &&
-          "border-line bg-white text-muted hover:border-plum-200 hover:bg-plum-50 hover:text-plum-700",
+          "border-line bg-white text-muted hover:border-cocoa-200 hover:bg-cocoa-50 hover:text-cocoa-700",
       )}
     >
       {children}

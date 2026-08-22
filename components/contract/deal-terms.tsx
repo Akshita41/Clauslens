@@ -18,14 +18,14 @@ export function DealTerms({
     <div>
       <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="font-display text-xl text-plum-900">Key deal terms</h2>
+          <h2 className="font-display text-xl text-cocoa-900">Key deal terms</h2>
           <p className="mt-1.5 text-[13px] leading-relaxed text-muted">
             Eight fields pulled from the contract. Each one links to the clause it
             was read from.
           </p>
         </div>
         {needsReview > 0 ? (
-          <span className="inline-flex items-center gap-2 rounded-full border border-amber-soft-200 bg-amber-soft-50 px-3 py-1.5 text-[12px] text-amber-soft-700">
+          <span className="inline-flex items-center gap-2 rounded-full border border-ochre-200 bg-ochre-50 px-3 py-1.5 text-[12px] text-ochre-700">
             <Info width={14} height={14} />
             {needsReview} worth a second look
           </span>
@@ -46,8 +46,8 @@ export function DealTerms({
                 className={cn(
                   "group flex w-full items-start gap-4 px-5 py-4 text-left transition-colors duration-200",
                   i > 0 && "border-t border-line",
-                  active ? "bg-plum-50" : "hover:bg-cream/70",
-                  uncertain && !active && "bg-amber-soft-50/40",
+                  active ? "bg-cocoa-50" : "hover:bg-linen/70",
+                  uncertain && !active && "bg-ochre-50/40",
                 )}
               >
                 <span className="w-[9.5rem] shrink-0 pt-0.5 text-[13px] font-medium text-muted">
@@ -55,7 +55,7 @@ export function DealTerms({
                 </span>
 
                 <span className="min-w-0 flex-1">
-                  <span className="block text-[14.5px] leading-relaxed text-plum-900">
+                  <span className="block text-[14.5px] leading-relaxed text-cocoa-900">
                     {e.value ?? (
                       <span className="text-muted italic">
                         Not found in this contract
@@ -69,8 +69,8 @@ export function DealTerms({
                         className={cn(
                           "inline-flex items-center gap-1.5 rounded-md px-1.5 py-0.5 font-mono text-[11px] transition-colors",
                           active
-                            ? "bg-plum-700 text-white"
-                            : "bg-plum-50 text-plum-500 group-hover:bg-plum-100",
+                            ? "bg-cocoa-700 text-white"
+                            : "bg-cocoa-50 text-cocoa-500 group-hover:bg-cocoa-100",
                         )}
                       >
                         §{clause.clauseNo} · p.{clause.page}
@@ -85,8 +85,8 @@ export function DealTerms({
                   className={cn(
                     "mt-1 shrink-0 transition-all duration-200",
                     active
-                      ? "translate-x-0.5 text-plum-500"
-                      : "text-line-strong group-hover:translate-x-0.5 group-hover:text-plum-400",
+                      ? "translate-x-0.5 text-cocoa-500"
+                      : "text-line-strong group-hover:translate-x-0.5 group-hover:text-cocoa-400",
                   )}
                 />
               </button>
@@ -96,7 +96,7 @@ export function DealTerms({
       </ul>
 
       <p className="mt-4 flex gap-2.5 text-[12.5px] leading-relaxed text-muted">
-        <span className="mt-1.5 size-1 shrink-0 rounded-full bg-rose-300" />
+        <span className="mt-1.5 size-1 shrink-0 rounded-full bg-blush-300" />
         Confidence is reported by the model, so treat it as an ordering for your
         review queue rather than a probability. Fields it is unsure about are
         tinted and listed first in your attention, not hidden.

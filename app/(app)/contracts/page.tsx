@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { PageHeader } from "@/components/app-shell";
 import { UploadCard } from "@/components/upload-card";
@@ -23,7 +24,7 @@ export default function ContractsPage() {
           {/* ── List ───────────────────────────────────────── */}
           <div className="order-2 lg:order-1">
             <div className="mb-4 flex items-baseline justify-between">
-              <h2 className="font-display text-xl text-plum-900">
+              <h2 className="font-display text-xl text-cocoa-900">
                 {contracts.length} contracts
               </h2>
               <span className="text-[13px] text-muted">Newest first</span>
@@ -40,19 +41,19 @@ export default function ContractsPage() {
                       disabled && "opacity-70",
                     )}
                   >
-                    <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-rose-50 text-plum-500">
+                    <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-blush-50 text-cocoa-500">
                       <FileText width={19} height={19} />
                     </span>
 
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
-                        <p className="truncate font-display text-[17px] tracking-[-0.01em] text-plum-900">
+                        <p className="truncate font-display text-[17px] tracking-[-0.01em] text-cocoa-900">
                           {c.title}
                         </p>
                         <StatusBadge status={c.status} />
                         {c.splitFallback ? (
                           <span
-                            className="rounded-full border border-amber-soft-200 bg-amber-soft-50 px-2 py-0.5 text-[10px] font-medium text-amber-soft-700"
+                            className="rounded-full border border-ochre-200 bg-ochre-50 px-2 py-0.5 text-[10px] font-medium text-ochre-700"
                             title="No clause headings found — split by paragraph instead. Citations are less precise."
                           >
                             fallback split
@@ -78,10 +79,10 @@ export default function ContractsPage() {
                       <ChevronRight
                         width={18}
                         height={18}
-                        className="shrink-0 text-line-strong transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-plum-400"
+                        className="shrink-0 text-line-strong transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-cocoa-400"
                       />
                     ) : (
-                      <span className="shrink-0 pr-1 text-[11px] text-clay-600">
+                      <span className="shrink-0 pr-1 text-[11px] text-brick-600">
                         No text layer
                       </span>
                     )}
@@ -109,20 +110,31 @@ export default function ContractsPage() {
           <div className="order-1 lg:order-2">
             <div className="lg:sticky lg:top-8">
               <UploadCard />
-              <div className="mt-5 rounded-2xl border border-line bg-cream/60 p-5">
+              <div className="mt-5 overflow-hidden rounded-2xl border border-line bg-linen/60">
+                <div className="relative h-32 w-full overflow-hidden">
+                  <Image
+                    src="/images/cream-arch.jpg"
+                    alt="A pale sculptural archway"
+                    fill
+                    sizes="360px"
+                    className="photo-warm object-cover"
+                  />
+                </div>
+                <div className="p-5">
                 <p className="eyebrow mb-3">Good to know</p>
                 <ul className="space-y-2.5 text-[13px] leading-relaxed text-muted">
                   <li className="flex gap-2.5">
-                    <span className="mt-1.5 size-1 shrink-0 rounded-full bg-rose-300" />
+                    <span className="mt-1.5 size-1 shrink-0 rounded-full bg-blush-300" />
                     Scanned PDFs are rejected — there is no OCR step, and a
                     silent bad read is worse than a clear refusal.
                   </li>
                   <li className="flex gap-2.5">
-                    <span className="mt-1.5 size-1 shrink-0 rounded-full bg-rose-300" />
+                    <span className="mt-1.5 size-1 shrink-0 rounded-full bg-blush-300" />
                     Nothing here is legal advice. It is a first pass to tell you
                     where to look.
                   </li>
                 </ul>
+                </div>
               </div>
             </div>
           </div>

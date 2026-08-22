@@ -2,55 +2,54 @@
 
 @theme {
   /* ── Warm neutrals ─────────────────────────────── */
-  --color-ivory: #fdfaf7;
-  --color-cream: #f9f3ee;
-  --color-line: #efe5e0;
-  --color-line-strong: #e3d4cd;
-  --color-ink: #2e272b;
-  --color-muted: #8b7a83;
+  --color-shell: #faf2ed; /* page ground */
+  --color-linen: #f3e5dc; /* tinted surface */
+  --color-blush-wash: #ecd6cb; /* the deep blush from the brief */
+  --color-line: #eeded5;
+  --color-line-strong: #e0c9bd;
+  --color-ink: #3a2620;
+  --color-muted: #93796d;
 
-  /* ── Plum (primary) ────────────────────────────── */
-  --color-plum-50: #f8f4f6;
-  --color-plum-100: #f0e7ec;
-  --color-plum-200: #e0cdd7;
-  --color-plum-300: #c9a9b9;
-  --color-plum-400: #a87e94;
-  --color-plum-500: #8a5f76;
-  --color-plum-600: #6e4a5e;
-  --color-plum-700: #5a3d4d;
-  --color-plum-800: #46303c;
-  --color-plum-900: #33232c;
+  /* ── Cocoa (primary — deep warm brown) ─────────── */
+  --color-cocoa-50: #f8f1ed;
+  --color-cocoa-100: #f0e3db;
+  --color-cocoa-200: #e2cabd;
+  --color-cocoa-300: #cba894;
+  --color-cocoa-400: #ab8069;
+  --color-cocoa-500: #8b6350;
+  --color-cocoa-600: #6f4c3c;
+  --color-cocoa-700: #593b2e;
+  --color-cocoa-800: #452c22;
+  --color-cocoa-900: #331f18;
 
-  /* ── Rose (accent) ─────────────────────────────── */
-  --color-rose-50: #fdf6f4;
-  --color-rose-100: #faeae5;
-  --color-rose-200: #f3d3cb;
-  --color-rose-300: #e8b4a9;
-  --color-rose-400: #da9184;
-  --color-rose-500: #c97264;
+  /* ── Blush / terracotta (accent) ───────────────── */
+  --color-blush-50: #fdf3ef;
+  --color-blush-100: #fae5dc;
+  --color-blush-200: #f4cdbe;
+  --color-blush-300: #e9ab94;
+  --color-blush-400: #db856a;
+  --color-blush-500: #c2603c; /* the terracotta from the reference */
+  --color-blush-600: #a54f2f;
 
   /* ── Semantic: risk severity ───────────────────── */
-  --color-sage-50: #edf3ee;
-  --color-sage-200: #cfe0d3;
-  --color-sage-600: #5f8069;
-  --color-sage-700: #4d6a56;
+  --color-sage-50: #eff2e8;
+  --color-sage-200: #d5ddc4;
+  --color-sage-600: #6e7f58;
+  --color-sage-700: #586647;
 
-  --color-amber-soft-50: #fbf1e4;
-  --color-amber-soft-200: #f0dcbd;
-  --color-amber-soft-600: #b0762f;
-  --color-amber-soft-700: #8e5f26;
+  --color-ochre-50: #fbf2e2;
+  --color-ochre-200: #f0dfba;
+  --color-ochre-600: #b07b2e;
+  --color-ochre-700: #8d6124;
 
-  --color-clay-50: #faebe8;
-  --color-clay-200: #f0cdc7;
-  --color-clay-600: #b4544a;
-  --color-clay-700: #94443c;
-
-  /* ── Type ──────────────────────────────────────── */
+  --color-brick-50: #fbecef;
+  --color-brick-200: #f0ccd4;
+  --color-brick-600: #9b3f52;
+  --color-brick-700: #7f3243;
 
   /* ── Elevation ─────────────────────────────────── */
-  --shadow-soft: 0 1px 2px rgb(70 48 60 / 0.04), 0 8px 24px -10px rgb(70 48 60 / 0.12);
-  --shadow-lift: 0 2px 4px rgb(70 48 60 / 0.05), 0 18px 40px -16px rgb(70 48 60 / 0.20);
-  --shadow-inset-line: inset 0 0 0 1px rgb(239 229 224 / 1);
+  --shadow-soft: 0 1px 2px rgb(69 44 34 / 0.04), 0 8px 24px -10px rgb(69 44 34 / 0.14);
+  --shadow-lift: 0 2px 4px rgb(69 44 34 / 0.05), 0 20px 44px -18px rgb(69 44 34 / 0.26);
 
   /* ── Motion ────────────────────────────────────── */
   --ease-gentle: cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -69,60 +68,81 @@
   }
 
   body {
-    background-color: var(--color-ivory);
+    background-color: var(--color-shell);
     color: var(--color-ink);
     font-family: var(--font-sans);
   }
 
-  ::selection {
-    background-color: var(--color-rose-200);
-    color: var(--color-plum-900);
+  /* The soft, slightly wonky serif from the reference — Fraunces carries an
+     optical-size and SOFT axis, which is what gives headings their warmth. */
+  .font-display {
+    font-variation-settings: "SOFT" 60, "WONK" 1;
   }
 
-  /* Slim, warm scrollbars — the default grey ones break the palette */
+  ::selection {
+    background-color: var(--color-blush-200);
+    color: var(--color-cocoa-900);
+  }
+
   * {
     scrollbar-width: thin;
     scrollbar-color: var(--color-line-strong) transparent;
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-plum-400);
+    outline: 2px solid var(--color-blush-400);
     outline-offset: 2px;
     border-radius: 4px;
   }
 }
 
 @layer components {
-  /* Letter-spaced micro-label used above section headings */
   .eyebrow {
     font-size: 0.6875rem;
     line-height: 1;
     font-weight: 600;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--color-plum-400);
+    color: var(--color-blush-500);
   }
 
-  /* The soft blush wash behind hero + auth screens */
   .wash {
     background-image:
-      radial-gradient(60rem 40rem at 12% -10%, var(--color-rose-100) 0%, transparent 55%),
-      radial-gradient(50rem 36rem at 92% 8%, var(--color-plum-100) 0%, transparent 50%),
-      linear-gradient(180deg, var(--color-ivory) 0%, var(--color-cream) 100%);
+      radial-gradient(58rem 38rem at 8% -12%, var(--color-blush-100) 0%, transparent 58%),
+      radial-gradient(46rem 34rem at 96% 4%, var(--color-linen) 0%, transparent 52%),
+      linear-gradient(180deg, var(--color-shell) 0%, var(--color-linen) 100%);
   }
 
-  .card {
-    background-color: #fff;
-    border: 1px solid var(--color-line);
-    border-radius: 1.25rem;
-    box-shadow: var(--shadow-soft);
+  /* Arch/oval photo crop, straight from the reference layout. */
+  .arch {
+    border-radius: 50% 50% 50% 50% / 42% 42% 58% 58%;
+  }
+
+  .arch-top {
+    border-radius: 999px 999px 1.5rem 1.5rem;
+  }
+
+  /* Warms any photograph toward the palette so a mixed set reads as one shoot. */
+  .photo-warm {
+    filter: sepia(0.22) saturate(1.06) contrast(0.97) brightness(1.02);
+  }
+
+  .photo-veil::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgb(58 38 32 / 0.42) 0%,
+      rgb(58 38 32 / 0.68) 100%
+    );
   }
 }
 
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -137,13 +157,13 @@
 }
 
 @utility animate-rise {
-  animation: rise 0.5s var(--ease-gentle) both;
+  animation: rise 0.6s var(--ease-gentle) both;
 }
 
 @utility skeleton {
   position: relative;
   overflow: hidden;
-  background-color: var(--color-plum-50);
+  background-color: var(--color-cocoa-50);
   &::after {
     content: "";
     position: absolute;

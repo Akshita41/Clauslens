@@ -33,7 +33,7 @@ export default function AccuracyPage() {
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px] text-muted">
           <span>
             Latest run{" "}
-            <span className="font-medium text-plum-800">{run.label}</span>
+            <span className="font-medium text-cocoa-800">{run.label}</span>
           </span>
           <span className="font-mono text-[12px]">{run.model}</span>
           <span>{formatDate(run.date)}</span>
@@ -52,7 +52,7 @@ export default function AccuracyPage() {
                 className={cn(
                   "font-medium",
                   delta > 0 && "text-sage-700",
-                  delta < 0 && "text-clay-700",
+                  delta < 0 && "text-brick-700",
                   delta === 0 && "text-muted",
                 )}
               >
@@ -75,9 +75,9 @@ export default function AccuracyPage() {
         </div>
 
         {/* ── Honest caveat ──────────────────────────────── */}
-        <div className="flex gap-3.5 rounded-2xl border border-amber-soft-200 bg-amber-soft-50/70 px-5 py-4">
-          <Info width={18} height={18} className="mt-0.5 shrink-0 text-amber-soft-600" />
-          <p className="text-[13px] leading-relaxed text-amber-soft-700">
+        <div className="flex gap-3.5 rounded-2xl border border-ochre-200 bg-ochre-50/70 px-5 py-4">
+          <Info width={18} height={18} className="mt-0.5 shrink-0 text-ochre-600" />
+          <p className="text-[13px] leading-relaxed text-ochre-700">
             <span className="font-medium">Read these with the sample size in mind.</span>{" "}
             {run.contracts} contracts and {total} labelled fields is a small set —
             one extra mistake moves a field&apos;s score by 20 points. It is enough
@@ -89,7 +89,7 @@ export default function AccuracyPage() {
         {/* ── Per-field ──────────────────────────────────── */}
         <Card className="overflow-hidden">
           <div className="border-b border-line px-6 py-5">
-            <h2 className="font-display text-xl text-plum-900">Accuracy by field</h2>
+            <h2 className="font-display text-xl text-cocoa-900">Accuracy by field</h2>
             <p className="mt-1.5 text-[13px] text-muted">
               Sorted worst first — the weak fields are the interesting ones.
             </p>
@@ -113,23 +113,23 @@ export default function AccuracyPage() {
                       i > 0 && "border-t border-line",
                     )}
                   >
-                    <span className="w-[9.5rem] shrink-0 text-[13.5px] font-medium text-plum-800">
+                    <span className="w-[9.5rem] shrink-0 text-[13.5px] font-medium text-cocoa-800">
                       {f.label}
                     </span>
 
-                    <div className="h-2 min-w-0 flex-1 overflow-hidden rounded-full bg-plum-50">
+                    <div className="h-2 min-w-0 flex-1 overflow-hidden rounded-full bg-cocoa-50">
                       <div
                         className={cn(
                           "h-full rounded-full transition-all duration-700",
                           tone === "sage" && "bg-sage-600",
-                          tone === "amber-soft" && "bg-amber-soft-600",
-                          tone === "clay" && "bg-clay-600",
+                          tone === "amber-soft" && "bg-ochre-600",
+                          tone === "clay" && "bg-brick-600",
                         )}
                         style={{ width: `${score}%` }}
                       />
                     </div>
 
-                    <span className="w-12 shrink-0 text-right font-mono text-[13px] text-plum-800">
+                    <span className="w-12 shrink-0 text-right font-mono text-[13px] text-cocoa-800">
                       {score}%
                     </span>
                     <span className="hidden w-14 shrink-0 text-right font-mono text-[11.5px] text-muted sm:block">
@@ -139,7 +139,7 @@ export default function AccuracyPage() {
                       className={cn(
                         "hidden w-12 shrink-0 text-right font-mono text-[11.5px] sm:block",
                         d > 0 && "text-sage-700",
-                        d < 0 && "text-clay-700",
+                        d < 0 && "text-brick-700",
                         d === 0 && "text-muted/50",
                       )}
                     >
@@ -154,7 +154,7 @@ export default function AccuracyPage() {
         {/* ── Misses ─────────────────────────────────────── */}
         <Card className="overflow-hidden">
           <div className="border-b border-line px-6 py-5">
-            <h2 className="font-display text-xl text-plum-900">
+            <h2 className="font-display text-xl text-cocoa-900">
               What it got wrong
             </h2>
             <p className="mt-1.5 text-[13px] text-muted">
@@ -165,7 +165,7 @@ export default function AccuracyPage() {
           <div className="overflow-x-auto">
             <table className="w-full min-w-[42rem] text-left text-[13px]">
               <thead>
-                <tr className="border-b border-line text-[11px] tracking-[0.08em] text-plum-400 uppercase">
+                <tr className="border-b border-line text-[11px] tracking-[0.08em] text-cocoa-400 uppercase">
                   <th className="px-6 py-3 font-medium">Contract</th>
                   <th className="px-4 py-3 font-medium">Field</th>
                   <th className="px-4 py-3 font-medium">Expected</th>
@@ -181,11 +181,11 @@ export default function AccuracyPage() {
                     <td className="px-6 py-3.5 font-mono text-[11.5px] text-muted">
                       {m.contract}
                     </td>
-                    <td className="px-4 py-3.5 font-medium text-plum-800">
+                    <td className="px-4 py-3.5 font-medium text-cocoa-800">
                       {m.field}
                     </td>
                     <td className="px-4 py-3.5 text-sage-700">{m.expected}</td>
-                    <td className="px-6 py-3.5 text-clay-700">{m.actual}</td>
+                    <td className="px-6 py-3.5 text-brick-700">{m.actual}</td>
                   </tr>
                 ))}
               </tbody>
@@ -220,14 +220,14 @@ function Stat({
       className={cn(
         "rounded-3xl border p-6",
         emphasis
-          ? "border-plum-200 bg-plum-50/60"
+          ? "border-cocoa-200 bg-cocoa-50/60"
           : "border-line bg-white shadow-soft",
       )}
     >
-      <p className="font-display text-[2.6rem] leading-none tracking-[-0.02em] text-plum-800">
+      <p className="font-display text-[2.6rem] leading-none tracking-[-0.02em] text-cocoa-800">
         {value}
       </p>
-      <p className="mt-3 text-[13px] font-medium text-plum-700">{label}</p>
+      <p className="mt-3 text-[13px] font-medium text-cocoa-700">{label}</p>
       {sub ? <p className="mt-1 text-[12px] text-muted">{sub}</p> : null}
     </div>
   );

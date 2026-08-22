@@ -2,9 +2,13 @@ import type { Metadata } from "next";
 import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
 
+// SOFT and WONK are what give Fraunces its warm, slightly quirky letterforms —
+// without requesting the axes here, the font-variation-settings in globals.css
+// would have nothing to act on.
 const fraunces = Fraunces({
   variable: "--font-fraunces",
   subsets: ["latin"],
+  axes: ["SOFT", "WONK", "opsz"],
   display: "swap",
 });
 
