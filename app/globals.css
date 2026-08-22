@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── Warm neutrals ─────────────────────────────── */
+  --color-ivory: #fdfaf7;
+  --color-cream: #f9f3ee;
+  --color-line: #efe5e0;
+  --color-line-strong: #e3d4cd;
+  --color-ink: #2e272b;
+  --color-muted: #8b7a83;
+
+  /* ── Plum (primary) ────────────────────────────── */
+  --color-plum-50: #f8f4f6;
+  --color-plum-100: #f0e7ec;
+  --color-plum-200: #e0cdd7;
+  --color-plum-300: #c9a9b9;
+  --color-plum-400: #a87e94;
+  --color-plum-500: #8a5f76;
+  --color-plum-600: #6e4a5e;
+  --color-plum-700: #5a3d4d;
+  --color-plum-800: #46303c;
+  --color-plum-900: #33232c;
+
+  /* ── Rose (accent) ─────────────────────────────── */
+  --color-rose-50: #fdf6f4;
+  --color-rose-100: #faeae5;
+  --color-rose-200: #f3d3cb;
+  --color-rose-300: #e8b4a9;
+  --color-rose-400: #da9184;
+  --color-rose-500: #c97264;
+
+  /* ── Semantic: risk severity ───────────────────── */
+  --color-sage-50: #edf3ee;
+  --color-sage-200: #cfe0d3;
+  --color-sage-600: #5f8069;
+  --color-sage-700: #4d6a56;
+
+  --color-amber-soft-50: #fbf1e4;
+  --color-amber-soft-200: #f0dcbd;
+  --color-amber-soft-600: #b0762f;
+  --color-amber-soft-700: #8e5f26;
+
+  --color-clay-50: #faebe8;
+  --color-clay-200: #f0cdc7;
+  --color-clay-600: #b4544a;
+  --color-clay-700: #94443c;
+
+  /* ── Type ──────────────────────────────────────── */
+
+  /* ── Elevation ─────────────────────────────────── */
+  --shadow-soft: 0 1px 2px rgb(70 48 60 / 0.04), 0 8px 24px -10px rgb(70 48 60 / 0.12);
+  --shadow-lift: 0 2px 4px rgb(70 48 60 / 0.05), 0 18px 40px -16px rgb(70 48 60 / 0.20);
+  --shadow-inset-line: inset 0 0 0 1px rgb(239 229 224 / 1);
+
+  /* ── Motion ────────────────────────────────────── */
+  --ease-gentle: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Fonts must be `inline` so they can reference the runtime vars next/font emits. */
+@theme inline {
+  --font-display: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--color-ivory);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  ::selection {
+    background-color: var(--color-rose-200);
+    color: var(--color-plum-900);
+  }
+
+  /* Slim, warm scrollbars — the default grey ones break the palette */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-strong) transparent;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-plum-400);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  /* Letter-spaced micro-label used above section headings */
+  .eyebrow {
+    font-size: 0.6875rem;
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-plum-400);
+  }
+
+  /* The soft blush wash behind hero + auth screens */
+  .wash {
+    background-image:
+      radial-gradient(60rem 40rem at 12% -10%, var(--color-rose-100) 0%, transparent 55%),
+      radial-gradient(50rem 36rem at 92% 8%, var(--color-plum-100) 0%, transparent 50%),
+      linear-gradient(180deg, var(--color-ivory) 0%, var(--color-cream) 100%);
+  }
+
+  .card {
+    background-color: #fff;
+    border: 1px solid var(--color-line);
+    border-radius: 1.25rem;
+    box-shadow: var(--shadow-soft);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@utility animate-rise {
+  animation: rise 0.5s var(--ease-gentle) both;
+}
+
+@utility skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-plum-50);
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      rgb(255 255 255 / 0.6),
+      transparent
+    );
+    animation: shimmer 1.6s infinite;
+  }
+}
