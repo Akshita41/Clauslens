@@ -1,0 +1,12 @@
+# Normalise line endings so the repo stores LF regardless of the OS it was
+# authored on. Without this, every commit from Windows warns about CRLF.
+* text=auto eol=lf
+
+# Binary assets must never be line-ending converted.
+*.jpg  binary
+*.jpeg binary
+*.png  binary
+*.ico  binary
+*.woff binary
+*.woff2 binary
+*.pdf  binary
