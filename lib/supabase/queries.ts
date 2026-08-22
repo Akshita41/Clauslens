@@ -55,3 +55,29 @@ export async function getContract(id: string): Promise<Contract | null> {
   if (error) throw error;
   return data ? toContract(data) : null;
 }
+
+type ClauseRow = {
+  id: string;
+  clause_no: string | null;
+  heading: string;
+  text: string;
+  page: number;
+};
+
+export async function listClauses(contractId: string) {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("clauses")
+    .select("id, clause_no, heading, text, page")
+    .eq("contract_id", contractId)
+    .order("char_start", { ascending: true });
+
+  if (error) throw error;
+  return (data ?? []).map((row: ClauseRow) => ({
+    id: row.id,
+    clauseNo: row.clause_no,
+    heading: row.heading,
+    text: row.text,
+    page: row.page,
+  }));
+}

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -9,7 +10,7 @@ import { Button } from "./ui";
 
 const MAX_BYTES = 25 * 1024 * 1024;
 
-type Phase = "idle" | "uploading" | "done" | "error";
+type Phase = "idle" | "uploading" | "parsing" | "done" | "error";
 
 export function UploadCard() {
   const router = useRouter();
@@ -17,12 +18,16 @@ export function UploadCard() {
   const [phase, setPhase] = useState<Phase>("idle");
   const [filename, setFilename] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+  const [contractId, setContractId] = useState<string | null>(null);
+  const [clauseCount, setClauseCount] = useState<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const reset = () => {
     setPhase("idle");
     setFilename(null);
     setMessage(null);
+    setContractId(null);
+    setClauseCount(null);
     if (inputRef.current) inputRef.current.value = "";
   };
 
@@ -86,6 +91,24 @@ export function UploadCard() {
         return;
       }
 
+      setContractId(id);
+
+      // Step one of the pipeline. Its own request, so a long parse never holds
+      // the upload open and the UI can show what stage it reached.
+      setPhase("parsing");
+      const response = await fetch(`/api/contracts/${id}/parse`, {
+        method: "POST",
+      });
+      const result = await response.json();
+
+      if (!response.ok) {
+        setPhase("error");
+        setMessage(result.error ?? "Could not read that PDF.");
+        router.refresh();
+        return;
+      }
+
+      setClauseCount(result.clauseCount);
       setPhase("done");
       router.refresh();
     },
@@ -97,7 +120,9 @@ export function UploadCard() {
     if (file) void upload(file);
   };
 
-  if (phase === "uploading" || phase === "done" || phase === "error") {
+  const busy = phase === "uploading" || phase === "parsing";
+
+  if (phase !== "idle") {
     return (
       <div className="rounded-3xl border border-line bg-white p-7 shadow-soft">
         <div className="flex items-start justify-between gap-4">
@@ -105,15 +130,17 @@ export function UploadCard() {
             <p className="eyebrow mb-2">
               {phase === "uploading"
                 ? "Uploading"
-                : phase === "done"
-                  ? "Uploaded"
-                  : "Didn't work"}
+                : phase === "parsing"
+                  ? "Reading clauses"
+                  : phase === "done"
+                    ? "Ready"
+                    : "Didn't work"}
             </p>
             <p className="truncate font-display text-lg text-cocoa-900">
               {filename}
             </p>
           </div>
-          {phase !== "uploading" ? (
+          {!busy ? (
             <button
               onClick={reset}
               className="shrink-0 rounded-full px-3 py-1.5 text-[13px] text-muted transition-colors hover:bg-cocoa-50 hover:text-cocoa-700"
@@ -127,12 +154,12 @@ export function UploadCard() {
           <span
             className={cn(
               "mt-0.5 grid size-7 shrink-0 place-items-center rounded-full border",
-              phase === "uploading" && "border-cocoa-200 bg-white text-cocoa-600",
+              busy && "border-cocoa-200 bg-white text-cocoa-600",
               phase === "done" && "border-sage-200 bg-sage-50 text-sage-700",
               phase === "error" && "border-brick-200 bg-brick-50 text-brick-700",
             )}
           >
-            {phase === "uploading" ? (
+            {busy ? (
               <Spinner width={14} height={14} className="animate-spin" />
             ) : phase === "done" ? (
               <Check width={14} height={14} />
@@ -144,11 +171,22 @@ export function UploadCard() {
           <p className="text-[13px] leading-relaxed text-muted">
             {phase === "uploading"
               ? "Sending the file to your private storage bucket…"
-              : phase === "done"
-                ? "Saved. It's in the list now, waiting to be read — the clause pipeline arrives in the next stage."
-                : message}
+              : phase === "parsing"
+                ? "Reading the PDF and splitting it on its own clause structure…"
+                : phase === "done"
+                  ? `Split into ${clauseCount} clauses, each with its page number.`
+                  : message}
           </p>
         </div>
+
+        {phase === "done" && contractId ? (
+          <Link
+            href={`/contracts/${contractId}`}
+            className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-cocoa-700 px-5 py-3 text-sm font-medium text-white shadow-soft transition-all hover:bg-cocoa-800 hover:shadow-lift"
+          >
+            Open the clauses
+          </Link>
+        ) : null}
       </div>
     );
   }

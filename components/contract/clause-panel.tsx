@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { clauseById } from "@/lib/mock-data";
+import type { Clause } from "@/lib/types";
 import { Quote, X } from "@/components/icons";
 
 /**
@@ -11,15 +11,14 @@ import { Quote, X } from "@/components/icons";
  * nothing the model says is more than one click from its source.
  */
 export function ClausePanel({
-  clauseId,
+  clause,
   onClose,
   className,
 }: {
-  clauseId: string | null;
+  clause: Clause | null;
   onClose?: () => void;
   className?: string;
 }) {
-  const clause = clauseId ? clauseById.get(clauseId) : null;
 
   return (
     <aside className={cn("flex flex-col", className)}>
