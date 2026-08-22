@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
-import type { Clause, Contract } from "@/lib/types";
+import type { Clause, Contract, Extraction } from "@/lib/types";
 import { riskFlags } from "@/lib/mock-data";
 import { StatusBadge } from "@/components/ui";
 import { ChevronRight, Lock } from "@/components/icons";
@@ -18,13 +18,16 @@ type Tab = "clauses" | "terms" | "risk" | "ask";
 export function ContractWorkspace({
   contract,
   clauses,
+  extractions,
   demo,
 }: {
   contract: Contract;
   clauses: Clause[];
+  extractions: Extraction[];
   /** True for the worked example, which runs on fixtures end to end. */
   demo: boolean;
 }) {
+  const hasClauses = clauses.length > 0;
   const [tab, setTab] = useState<Tab>(demo ? "terms" : "clauses");
   const [selected, setSelected] = useState<string | null>(null);
   const [drawer, setDrawer] = useState(false);
@@ -47,7 +50,7 @@ export function ContractWorkspace({
   // the roadmap is part of the story.
   const tabs: { key: Tab; label: string; badge?: number; locked: boolean }[] = [
     { key: "clauses", label: "Clauses", badge: clauses.length, locked: false },
-    { key: "terms", label: "Deal terms", locked: !demo },
+    { key: "terms", label: "Deal terms", locked: !demo && !hasClauses },
     { key: "risk", label: "Risk review", badge: demo ? highRisk : undefined, locked: !demo },
     { key: "ask", label: "Ask", locked: !demo },
   ];
@@ -143,7 +146,14 @@ export function ContractWorkspace({
               />
             ) : null}
             {tab === "terms" ? (
-              <DealTerms selectedClauseId={selected} onSelect={select} />
+              <DealTerms
+                contractId={contract.id}
+                extractions={extractions}
+                clausesById={byId}
+                selectedClauseId={selected}
+                onSelect={select}
+                readOnly={demo}
+              />
             ) : null}
             {tab === "risk" ? (
               <RiskReview selectedClauseId={selected} onSelect={select} />

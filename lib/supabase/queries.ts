@@ -1,5 +1,6 @@
 import { createClient } from "./server";
 import type { Contract } from "@/lib/types";
+import { EXTRACTION_FIELDS } from "@/lib/ai/schemas";
 
 /** Database rows are snake_case; the UI works in the shapes in lib/types.ts. */
 type ContractRow = {
@@ -80,4 +81,51 @@ export async function listClauses(contractId: string) {
     text: row.text,
     page: row.page,
   }));
+}
+
+type ExtractionRow = {
+  id: string;
+  field_name: string;
+  value: string | null;
+  confidence: "high" | "medium" | "low" | null;
+  clause_id: string | null;
+};
+
+export async function listExtractions(contractId: string) {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("extractions")
+    .select("id, field_name, value, confidence, clause_id")
+    .eq("contract_id", contractId);
+
+  if (error) throw error;
+
+  const byField = new Map(
+    (data ?? []).map((row: ExtractionRow) => [row.field_name, row]),
+  );
+
+  // Always return all eight fields in display order, so a term the model never
+  // answered still shows up as "not found" rather than silently disappearing.
+  return EXTRACTION_FIELDS.map((field) => {
+    const row = byField.get(field.name);
+    return {
+      id: row?.id ?? field.name,
+      fieldName: field.name,
+      label: field.label,
+      value: row?.value ?? null,
+      confidence: row?.confidence ?? "low",
+      clauseId: row?.clause_id ?? null,
+    };
+  });
+}
+
+export async function hasExtractions(contractId: string) {
+  const supabase = await createClient();
+  const { count, error } = await supabase
+    .from("extractions")
+    .select("id", { count: "exact", head: true })
+    .eq("contract_id", contractId);
+
+  if (error) throw error;
+  return (count ?? 0) > 0;
 }

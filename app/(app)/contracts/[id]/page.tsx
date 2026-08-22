@@ -1,23 +1,36 @@
 import { notFound } from "next/navigation";
 import { ContractWorkspace } from "@/components/contract/workspace";
-import { contracts as demoContracts, clauses as demoClauses } from "@/lib/mock-data";
-import { getContract, listClauses } from "@/lib/supabase/queries";
+import {
+  contracts as demoContracts,
+  clauses as demoClauses,
+  extractions as demoExtractions,
+} from "@/lib/mock-data";
+import { getContract, listClauses, listExtractions } from "@/lib/supabase/queries";
 
 /**
  * Two sources for now: the worked example, which is fixtures, and real uploads,
- * whose clauses come from Postgres. They collapse into one source once the
- * extraction stage lands.
+ * whose clauses and extractions come from Postgres.
  */
 async function load(id: string) {
   const example = demoContracts.find((c) => c.id === id);
   if (example) {
-    return { contract: example, clauses: demoClauses, demo: true };
+    return {
+      contract: example,
+      clauses: demoClauses,
+      extractions: demoExtractions,
+      demo: true,
+    };
   }
 
   const contract = await getContract(id);
   if (!contract) return null;
 
-  return { contract, clauses: await listClauses(id), demo: false };
+  const [clauses, extractions] = await Promise.all([
+    listClauses(id),
+    listExtractions(id),
+  ]);
+
+  return { contract, clauses, extractions, demo: false };
 }
 
 export async function generateMetadata(props: PageProps<"/contracts/[id]">) {
@@ -35,6 +48,7 @@ export default async function ContractPage(props: PageProps<"/contracts/[id]">) 
     <ContractWorkspace
       contract={found.contract}
       clauses={found.clauses}
+      extractions={found.extractions}
       demo={found.demo}
     />
   );
